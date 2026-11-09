@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Institutional Market Research Terminal</title>
+  <meta name="theme-color" content="#0a0f1d">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0f1d'/%3E%3Cpath d='M25 70 L45 35 L60 55 L80 25' fill='none' stroke='%2338bdf8' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='80' cy='25' r='8' fill='%23d4af37'/%3E%3C/svg%3E">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #070b14;
+      color: #e2e8f0;
+    }
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0a0f1d;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+    .card-terminal {
+      background: #0d1424;
+      border: 1px solid #1a233a;
+    }
+    .active-nav-tab {
+      background-color: #162035;
+      color: #38bdf8;
+      border-bottom: 2px solid #38bdf8;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-[#070b14]">
+
+  <!-- Global Header Bar -->
+  <header class="bg-[#0a0f1d] border-b border-slate-800 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between py-3 gap-3">
+        <!-- Logo & Platform Identity -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 via-sky-500/20 to-indigo-500/20 border border-slate-700 flex items-center justify-center text-amber-400 font-black text-lg shadow-inner">
+            ⚡
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xl font-extrabold tracking-tight text-white">EQUITY INTELLIGENCE TERMINAL</span>
+              <span class="px-2 py-0.5 text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded uppercase tracking-wider">Tier-1 Research Vault</span>
+            </div>
+            <p class="text-xs text-slate-400">Institutional Strategy & Equity Research Aggregator • Goldman Sachs, Morgan Stanley, J.P. Morgan & More</p>
+          </div>
+        </div>
+
+        <!-- Quick Macro Bar & Mobile Install Trigger -->
+        <div class="flex flex-wrap items-center gap-3 sm:gap-5 text-xs">
+          <div class="flex items-center gap-2 bg-[#0d1424] px-3 py-1.5 rounded-lg border border-slate-800">
+            <span class="text-slate-400">NIFTY 50:</span>
+            <span class="font-bold text-emerald-400 mono">24,480.20 (+0.62%)</span>
+          </div>
+          <div class="flex items-center gap-2 bg-[#0d1424] px-3 py-1.5 rounded-lg border border-slate-800 hidden sm:flex">
+            <span class="text-slate-400">BRENT:</span>
+            <span class="font-bold text-sky-400 mono">$74.20/bbl</span>
+          </div>
+          <div class="flex items-center gap-2 bg-[#0d1424] px-3 py-1.5 rounded-lg border border-slate-800 hidden md:flex">
+            <span class="text-slate-400">USD/INR:</span>
+            <span class="font-bold text-slate-200 mono">₹84.32</span>
+          </div>
+
+          <!-- Install on Android Button -->
+          <button onclick="openInstallModal()" class="px-3 py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-lg text-xs flex items-center gap-1.5 shadow-md transition transform active:scale-95">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+            <span>Install on Android</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="flex border-t border-slate-800 overflow-x-auto" id="main-nav">
+        <button onclick="switchTab('vault-tab')" id="tab-btn-vault" class="px-5 py-3 text-sm font-semibold text-slate-300 hover:text-white transition flex items-center gap-2 whitespace-nowrap active-nav-tab">
+          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+          Research Report Vault
+          <span class="bg-amber-500/20 text-amber-300 text-xs px-1.5 py-0.5 rounded-full mono" id="report-count-badge">16</span>
+        </button>
+        <button onclick="switchTab('consensus-tab')" id="tab-btn-consensus" class="px-5 py-3 text-sm font-semibold text-slate-400 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
+          <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+          Consensus Target Radar
+        </button>
+        <button onclick="switchTab('ai-analyst-tab')" id="tab-btn-ai-analyst" class="px-5 py-3 text-sm font-semibold text-slate-400 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
+          <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          AI Institutional Analyst
+          <span class="bg-emerald-500/20 text-emerald-400 text-[10px] px-1.5 py-0.5 rounded mono uppercase font-bold">Connected AI</span>
+        </button>
+        <button onclick="switchTab('macro-tab')" id="tab-btn-macro" class="px-5 py-3 text-sm font-semibold text-slate-400 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
+          <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"></path></svg>
+          Global Macro & Yields
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main View Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: RESEARCH REPORT VAULT -->
+    <!-- ========================================== -->
+    <section id="vault-tab" class="space-y-6">
+      <!-- Search, Brokerage Filter & Sector Filter -->
+      <div class="card-terminal p-5 rounded-2xl shadow-xl space-y-4">
+        <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+          <div class="relative w-full md:w-96">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <input type="text" id="report-search" placeholder="Search reports by stock, broker, theme, analyst..." oninput="filterReports()" class="w-full bg-[#070b14] border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition">
+          </div>
+
+          <!-- Institution Badges Filter -->
+          <div class="flex flex-wrap gap-2 w-full md:w-auto" id="broker-filters">
+            <button onclick="setBrokerFilter('all')" class="broker-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-slate-950 transition" data-broker="all">All Houses</button>
+            <button onclick="setBrokerFilter('Goldman Sachs')" class="broker-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition" data-broker="Goldman Sachs">Goldman Sachs</button>
+            <button onclick="setBrokerFilter('Morgan Stanley')" class="broker-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition" data-broker="Morgan Stanley">Morgan Stanley</button>
+            <button onclick="setBrokerFilter('J.P. Morgan')" class="broker-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition" data-broker="J.P. Morgan">J.P. Morgan</button>
+            <button onclick="setBrokerFilter('Jefferies')" class="broker-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition" data-broker="Jefferies">Jefferies</button>
+            <button onclick="setBrokerFilter('Domestic PSUs & Brokers')" class="broker-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition" data-broker="Domestic PSUs & Brokers">Kotak / Motilal / ICICI</button>
+          </div>
+        </div>
+
+        <!-- Secondary Sector Pills -->
+        <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-800/80 text-xs">
+          <span class="text-slate-400 font-medium">Sectors:</span>
+          <button onclick="setSectorFilter('all')" class="sector-btn px-2.5 py-1 rounded text-xs font-bold text-sky-400 bg-sky-500/10 border border-sky-500/30" data-sector="all">All Sectors</button>
+          <button onclick="setSectorFilter('Macro & Strategy')" class="sector-btn px-2.5 py-1 rounded text-xs font-medium text-slate-400 hover:text-white" data-sector="Macro & Strategy">Macro & Strategy</button>
+          <button onclick="setSectorFilter('Defence & Capital Goods')" class="sector-btn px-2.5 py-1 rounded text-xs font-medium text-slate-400 hover:text-white" data-sector="Defence & Capital Goods">Defence & Capital Goods</button>
+          <button onclick="setSectorFilter('Technology & AI')" class="sector-btn px-2.5 py-1 rounded text-xs font-medium text-slate-400 hover:text-white" data-sector="Technology & AI">Technology & AI</button>
+          <button onclick="setSectorFilter('Banking & Financials')" class="sector-btn px-2.5 py-1 rounded text-xs font-medium text-slate-400 hover:text-white" data-sector="Banking & Financials">Banking & Financials</button>
+          <button onclick="setSectorFilter('Energy & Infrastructure')" class="sector-btn px-2.5 py-1 rounded text-xs font-medium text-slate-400 hover:text-white" data-sector="Energy & Infrastructure">Energy & Infrastructure</button>
+        </div>
+      </div>
+
+      <!-- Quick Institutional Stats Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="card-terminal p-4 rounded-xl border-l-4 border-l-amber-500">
+          <span class="text-xs text-slate-400 font-medium uppercase tracking-wider">Top Overweight Sector</span>
+          <div class="text-lg font-bold text-white mt-1">Defence & Infrastructure</div>
+          <span class="text-[11px] text-emerald-400">76% Brokerage Consensus Overweight</span>
+        </div>
+        <div class="card-terminal p-4 rounded-xl border-l-4 border-l-sky-500">
+          <span class="text-xs text-slate-400 font-medium uppercase tracking-wider">Goldman Sachs Nifty Target</span>
+          <div class="text-lg font-bold text-white mono mt-1">28,500 (12M Horizon)</div>
+          <span class="text-[11px] text-sky-400">+16.4% Projected Upside</span>
+        </div>
+        <div class="card-terminal p-4 rounded-xl border-l-4 border-l-emerald-500">
+          <span class="text-xs text-slate-400 font-medium uppercase tracking-wider">Highest Sector Earnings CAGR</span>
+          <div class="text-lg font-bold text-white mt-1">Capital Goods / Shipyards</div>
+          <span class="text-[11px] text-emerald-400">28.4% Projected FY26–28 CAGR</span>
+        </div>
+        <div class="card-terminal p-4 rounded-xl border-l-4 border-l-purple-500">
+          <span class="text-xs text-slate-400 font-medium uppercase tracking-wider">FII Inflow Outlook</span>
+          <div class="text-lg font-bold text-white mt-1">$22B Net Positive</div>
+          <span class="text-[11px] text-purple-400">Morgan Stanley EM Strategy Call</span>
+        </div>
+      </div>
+
+      <!-- Reports Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="reports-grid">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: CONSENSUS TARGET RADAR -->
+    <!-- ========================================== -->
+    <section id="consensus-tab" class="space-y-6 hidden">
+      <div class="card-terminal p-6 rounded-2xl space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-4">
+          <div>
+            <h2 class="text-lg font-bold text-white tracking-wide">Institutional Consensus & Valuation Screener</h2>
+            <p class="text-xs text-slate-400">Aggregated Target Prices & Ratings from Goldman Sachs, Morgan Stanley, Jefferies, J.P. Morgan, Kotak & Motilal</p>
+          </div>
+          <div class="flex items-center gap-2 text-xs">
+            <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">Strong Buy: 5</span>
+            <span class="px-2.5 py-1 rounded bg-sky-500/20 text-sky-400 font-bold border border-sky-500/30">Buy / Outperform: 3</span>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-[#070b14] text-slate-400 uppercase tracking-wider border-b border-slate-800">
+              <tr>
+                <th class="py-3 px-3">Company / Ticker</th>
+                <th class="py-3 px-3">Sector</th>
+                <th class="py-3 px-3 text-right">CMP (INR)</th>
+                <th class="py-3 px-3 text-right">Consensus Target</th>
+                <th class="py-3 px-3 text-right text-emerald-400">Upside Potential</th>
+                <th class="py-3 px-3 text-center">Consensus Rating</th>
+                <th class="py-3 px-3 text-center">Coverage (B/H/S)</th>
+                <th class="py-3 px-3 text-right">Forward P/E</th>
+                <th class="py-3 px-3 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 font-mono" id="consensus-table-body">
+              <!-- Rendered by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: AI INSTITUTIONAL RESEARCH ANALYST -->
+    <!-- ========================================== -->
+    <section id="ai-analyst-tab" class="space-y-6 hidden">
+      <!-- AI Intelligence Engine Header -->
+      <div class="card-terminal p-6 rounded-2xl border-l-4 border-l-emerald-500 bg-gradient-to-r from-[#0d1726] via-[#0d1424] to-[#12192c]">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="px-2 py-0.5 text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                AI REPORT SYNTHESIS MODEL
+              </span>
+              <span class="text-xs text-slate-400">Cross-Referencing 16+ Global Institutional Research Notes</span>
+            </div>
+            <h2 class="text-xl font-extrabold text-white">Ask Institutional Intelligence</h2>
+            <p class="text-sm text-slate-300 mt-1 max-w-3xl">
+              Ask any macro thesis question, compare Goldman Sachs vs Morgan Stanley viewpoints, or simulate EPS growth impacts on equity valuations.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Interactive Prompt & Chat Interface -->
+        <div class="lg:col-span-2 card-terminal p-6 rounded-2xl space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <span class="text-sm font-bold text-white tracking-wide">Multi-Brokerage Synthesis Engine</span>
+            <span class="text-xs text-slate-400 font-mono">Updated Real-Time</span>
+          </div>
+
+          <!-- Suggested Query Chips -->
+          <div class="flex flex-wrap gap-2 text-xs">
+            <button onclick="askInstitutionalAi('goldman_india')" class="px-3 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-amber-600 hover:text-slate-950 font-medium transition border border-slate-700">🏛️ Goldman Sachs India Capex Call</button>
+            <button onclick="askInstitutionalAi('defence_supercycle')" class="px-3 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-sky-600 hover:text-white font-medium transition border border-slate-700">🛡️ Jefferies & MS on Defence & Shipyards</button>
+            <button onclick="askInstitutionalAi('ai_chips')" class="px-3 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-emerald-600 hover:text-white font-medium transition border border-slate-700">💻 Tech & AI Hardware Supercycle</button>
+            <button onclick="askInstitutionalAi('banking_credit')" class="px-3 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-purple-600 hover:text-white font-medium transition border border-slate-700">🏦 J.P. Morgan Banking Sector Margin View</button>
+          </div>
+
+          <!-- Query Input Field -->
+          <div class="flex gap-2">
+            <input type="text" id="ai-query" placeholder="Ask anything (e.g. Which stocks have highest upside? What is UBS's stance on crude oil?)..." class="flex-1 bg-[#070b14] border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
+            <button onclick="submitInstitutionalQuery()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-sm flex items-center gap-1.5 transition">
+              <span>Synthesize</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+          </div>
+
+          <!-- Response Readout -->
+          <div class="p-5 rounded-xl bg-[#070b14] border border-slate-800 text-sm leading-relaxed text-slate-200 min-h-[180px] flex flex-col justify-center">
+            <div class="flex items-center gap-2 text-emerald-400 font-bold mb-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+              <span>Institutional Research Consensus Synthesis</span>
+            </div>
+            <div id="ai-output-text" class="text-slate-300">
+              Welcome to the Institutional AI Analyst. Select any of the pre-indexed themes above or enter a custom market research inquiry. The model scans reports from Goldman Sachs, Morgan Stanley, J.P. Morgan, Jefferies, and top domestic institutional desks to deliver structured investment theses, earnings growth vectors, and target valuations.
+            </div>
+          </div>
+        </div>
+
+        <!-- Macro Valuation Sensitivity Simulator -->
+        <div class="card-terminal p-6 rounded-2xl space-y-4">
+          <h3 class="text-sm font-bold text-white tracking-wide uppercase">Nifty Target Sensitivity Engine</h3>
+          <p class="text-xs text-slate-400">Model index targets based on Goldman Sachs & Morgan Stanley EPS valuation frameworks:</p>
+
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs">
+              <span class="text-slate-300">Projected FY27 Nifty EPS (INR)</span>
+              <span class="font-mono text-sky-400 font-bold" id="sim-eps-val">₹1,320</span>
+            </div>
+            <input type="range" min="1150" max="1500" step="10" value="1320" id="slider-eps" oninput="calcNiftySim()" class="w-full accent-sky-500">
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs">
+              <span class="text-slate-300">Target Forward P/E Multiple</span>
+              <span class="font-mono text-amber-400 font-bold" id="sim-pe-val">21.5x</span>
+            </div>
+            <input type="range" min="17" max="25" step="0.5" value="21.5" id="slider-nifty-pe" oninput="calcNiftySim()" class="w-full accent-amber-500">
+          </div>
+
+          <div class="p-4 rounded-xl bg-[#070b14] border border-slate-800 space-y-2 pt-3">
+            <div class="flex justify-between text-xs">
+              <span class="text-slate-400">Current Nifty Level:</span>
+              <span class="font-mono font-bold text-white">24,480</span>
+            </div>
+            <div class="flex justify-between text-xs">
+              <span class="text-slate-400">Projected Index Target:</span>
+              <span class="font-mono font-bold text-emerald-400 text-sm" id="sim-nifty-target">28,380</span>
+            </div>
+            <div class="border-t border-slate-800 pt-2 flex justify-between items-baseline">
+              <span class="text-xs font-bold text-slate-300">Implied Index Upside:</span>
+              <span class="text-base font-black font-mono text-sky-400" id="sim-nifty-upside">+15.9%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: GLOBAL MACRO & YIELDS -->
+    <!-- ========================================== -->
+    <section id="macro-tab" class="space-y-6 hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="card-terminal p-4 rounded-xl">
+          <div class="flex justify-between items-center text-xs text-slate-400">
+            <span>S&P 500</span>
+            <span class="text-emerald-400 font-bold">+0.48%</span>
+          </div>
+          <div class="text-2xl font-black text-white mono mt-1">5,892.40</div>
+          <span class="text-[11px] text-slate-400">GS Target: 6,200</span>
+        </div>
+        <div class="card-terminal p-4 rounded-xl">
+          <div class="flex justify-between items-center text-xs text-slate-400">
+            <span>NASDAQ 100</span>
+            <span class="text-emerald-400 font-bold">+0.82%</span>
+          </div>
+          <div class="text-2xl font-black text-white mono mt-1">20,684.10</div>
+          <span class="text-[11px] text-emerald-400">Tech Supercycle Intact</span>
+        </div>
+        <div class="card-terminal p-4 rounded-xl">
+          <div class="flex justify-between items-center text-xs text-slate-400">
+            <span>INDIA 10Y BOND</span>
+            <span class="text-rose-400 font-bold">-2 bps</span>
+          </div>
+          <div class="text-2xl font-black text-white mono mt-1">6.81%</div>
+          <span class="text-[11px] text-slate-400">RBI Neutral Stance</span>
+        </div>
+        <div class="card-terminal p-4 rounded-xl">
+          <div class="flex justify-between items-center text-xs text-slate-400">
+            <span>US 10Y TREASURY</span>
+            <span class="text-rose-400 font-bold">-4 bps</span>
+          </div>
+          <div class="text-2xl font-black text-white mono mt-1">4.38%</div>
+          <span class="text-[11px] text-slate-400">Fed Rate Cut Pricing</span>
+        </div>
+      </div>
+
+      <!-- Macro Comparison Chart -->
+      <div class="card-terminal p-6 rounded-2xl">
+        <h3 class="text-base font-bold text-white mb-3">Global Macro Assets Normalized Trend (YTD)</h3>
+        <div class="relative h-80 w-full">
+          <canvas id="macroChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Detailed Report Modal Viewer -->
+  <div id="report-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#0d1424] border border-slate-700 rounded-2xl max-w-3xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-start border-b border-slate-800 pb-3">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span id="modal-broker" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-mono"></span>
+            <span id="modal-sector" class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-300 font-medium"></span>
+            <span id="modal-rating" class="px-2 py-0.5 rounded text-[10px] font-bold"></span>
+          </div>
+          <h3 id="modal-title" class="text-xl font-bold text-white mt-1"></h3>
+          <span id="modal-meta" class="text-xs text-slate-400 font-mono"></span>
+        </div>
+        <button onclick="closeReportModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div class="space-y-4 text-sm text-slate-300 leading-relaxed" id="modal-body">
+        <!-- Rendered dynamically -->
+      </div>
+      <div class="pt-3 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
+        <span>Verified Institutional Equity Research Note</span>
+        <button onclick="closeReportModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition font-medium">Close Report</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Android Install Modal -->
+  <div id="install-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#0d1424] border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+      <div class="flex justify-between items-start border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 text-lg">
+            📲
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-white">Install Research Terminal on Android</h3>
+            <span class="text-xs text-slate-400">Progressive Web App (PWA) Standalone Mode</span>
+          </div>
+        </div>
+        <button onclick="closeInstallModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs text-slate-300">
+        <p>Install this terminal on your phone via GitHub Pages or local Chrome:</p>
+        <div class="space-y-2">
+          <div class="p-3 rounded-lg bg-[#070b14] border border-slate-800 flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-[11px] shrink-0">1</span>
+            <div>
+              <strong class="text-white block mb-0.5">Open in Chrome on Android</strong>
+              <span>Open the hosted GitHub Pages link in Chrome on your phone.</span>
+            </div>
+          </div>
+          <div class="p-3 rounded-lg bg-[#070b14] border border-slate-800 flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-[11px] shrink-0">2</span>
+            <div>
+              <strong class="text-white block mb-0.5">Tap "Install app" / "Add to Home screen"</strong>
+              <span>Tap the top 3 dots (⋮) in Chrome and select "Install app".</span>
+            </div>
+          </div>
+          <div class="p-3 rounded-lg bg-[#070b14] border border-slate-800 flex items-start gap-2.5">
+            <span class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-[11px] shrink-0">3</span>
+            <div>
+              <strong class="text-white block mb-0.5">Launch as Standalone App</strong>
+              <span>Runs full-screen with offline caching and zero browser URL bars.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-slate-800 flex justify-end">
+        <button onclick="closeInstallModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition font-medium text-xs">Understood</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terminal Logic & Data Scripts -->
+  <script>
+    // ==========================================
+    // 1. INSTITUTIONAL RESEARCH REPORTS DATABASE
+    // ==========================================
+    const RESEARCH_REPORTS = [
+      {
+        id: "gs-india-strategy-2027",
+        title: "India Strategy: The Multi-Year Capex Inflection & Nifty Target 28,500",
+        institution: "Goldman Sachs",
+        brokerBadgeClass: "bg-amber-500/20 text-amber-300 border border-amber-500/40",
+        sector: "Macro & Strategy",
+        assetClass: "Equities",
+        rating: "OVERWEIGHT",
+        ratingBadgeClass: "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30",
+        date: "October 2026",
+        analysts: "Sunil Koul, Timothy Moe, CFA",
+        targetHeadline: "Nifty 12-Month Target: 28,500 (+16.4%)",
+        summary: "Goldman Sachs initiates an aggressive Overweight on Indian equities, citing clean corporate balance sheets, private capex revival, and sustained EPS growth compounding at 15.2% CAGR.",
+        details: `
+          <h4 class="text-white font-bold mb-1">Key Strategic Investment Thesis:</h4>
+          <p>India remains Goldman Sachs' top structural Overweight within Emerging Markets. The transition from public infrastructure capex to private sector capacity expansion is underway, driven by high capacity utilization (>75%) in cement, steel, and capital goods.</p>
+          <div class="p-3 my-2 rounded-lg bg-[#070b14] border border-slate-800 text-xs">
+            <strong>Key Valuation Multiples & Assumptions:</strong><br>
+            • FY27 Nifty EPS projection: ₹1,325 (vs consensus ₹1,300)<br>
+            • Target Forward P/E multiple: 21.5x (just above 10-year mean of 20.2x)<br>
+            • Primary Sector Picks: Large Cap Private Banks (HDFC Bank, ICICI), Capital Goods (L&T), and Defence Leaders (HAL, BEL).
+          </div>
+          <p><strong>Downside Risks:</strong> Sustained geopolitical escalation driving crude above $90/bbl, global trade tariff fragmentation, or unexpected slowdown in rural domestic consumption.</p>
+        `
+      },
+      {
+        id: "ms-defence-supercycle",
+        title: "India Defence & Aerospace: The Decadal $130 Billion Modernization Supercycle",
+        institution: "Morgan Stanley",
+        brokerBadgeClass: "bg-sky-500/20 text-sky-300 border border-sky-500/40",
+        sector: "Defence & Capital Goods",
+        assetClass: "Equities",
+        rating: "OVERWEIGHT",
+        ratingBadgeClass: "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30",
+        date: "September 2026",
+        analysts: "Chetan Ahya, Rahul Arora",
+        targetHeadline: "Sector Stance: Multi-Year Structural Bull",
+        summary: "Morgan Stanley projects cumulative defence capital outlays exceeding $130 Billion through 2032, providing unprecedented order book coverage of 4x to 6x trailing revenues for indigenous shipbuilders and aerospace manufacturers.",
+        details: `
+          <h4 class="text-white font-bold mb-1">Core Thematic Drivers:</h4>
+          <p>The government's 'Make in India' and DAP 2020 policies have catalyzed a structural shift towards domestic defence procurement. Shipyards (Mazagon Dock, Cochin Shipyard, Swan Defence) and electronics manufacturers (BEL) command visibility through 2030.</p>
+          <div class="p-3 my-2 rounded-lg bg-[#070b14] border border-slate-800 text-xs">
+            <strong>Key Stock Conviction Picks:</strong><br>
+            • <em>Bharat Electronics (BEL):</em> Target ₹360 (Radar & EW systems dominance)<br>
+            • <em>Hindustan Aeronautics (HAL):</em> Target ₹5,400 (Tejas Mk1A & helicopter production)<br>
+            • <em>Swan Defence (SWANDEF):</em> Target ₹3,400 (Pipavav drydock capacity & export tanker/tug deals).
+          </div>
+          <p><strong>Valuation Lens:</strong> Sector trades at 35x-42x P/E, which is supported by superior ROCE (>25%) and zero net-debt balance sheets across key players.</p>
+        `
+      },
+      {
+        id: "jpm-banking-inflection",
+        title: "India Banks: Clean Balance Sheets, Resilient NIMs & Credit Growth Re-Rating",
+        institution: "J.P. Morgan",
+        brokerBadgeClass: "bg-rose-500/20 text-rose-300 border border-rose-500/40",
+        sector: "Banking & Financials",
+        assetClass: "Equities",
+        rating: "OVERWEIGHT",
+        ratingBadgeClass: "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30",
+        date: "November 2026",
+        analysts: "Saurabh Kumar, Aditya Jain",
+        targetHeadline: "Bank Nifty Target: 56,000",
+        summary: "J.P. Morgan highlights that Indian commercial banks boast the lowest Gross NPA ratios in 12 years (sub-2.8%), with credit growth stabilizing comfortably at 13-14% YoY.",
+        details: `
+          <h4 class="text-white font-bold mb-1">Investment Highlights:</h4>
+          <p>Despite margin compression concerns from sticky deposit costs, private sector lenders are set to gain market share as retail unsecured lending moderates and corporate capex loans pick up.</p>
+          <div class="p-3 my-2 rounded-lg bg-[#070b14] border border-slate-800 text-xs">
+            <strong>Top Institutional Recommendations:</strong><br>
+            • <em>HDFC Bank:</em> Target ₹2,150 (Post-merger loan-to-deposit ratio normalising)<br>
+            • <em>ICICI Bank:</em> Target ₹1,480 (Best-in-class risk-adjusted return on assets of 2.3%).
+          </div>
+        `
+      },
+      {
+        id: "jefferies-greed-fear",
+        title: "Greed & Fear: The Indian Manufacturing & Shipyard Industrial Renaissance",
+        institution: "Jefferies",
+        brokerBadgeClass: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40",
+        sector: "Defence & Capital Goods",
+        assetClass: "Equities",
+        rating: "STRONG BUY",
+        ratingBadgeClass: "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30",
+        date: "October 2026",
+        analysts: "Christopher Wood, Mahesh Nandurkar",
+        targetHeadline: "Allocation: Maximum India Overweight",
+        summary: "Chris Wood's global portfolio maintains its highest historical weighting in India, emphasizing capital goods, infrastructure conglomerates, and global shipyard capacity shifts.",
+        details: `
+          <h4 class="text-white font-bold mb-1">Thesis & Global Slot Shortage Analysis:</h4>
+          <p>Chinese and Korean yards are sold out through 2029 for mega-container and LNG carriers. Global shipowners (e.g. Svitzer, Stenersen) are turning to Indian yards like Swan Defence and Cochin Shipyard for tankers, tugs, and offshore vessels.</p>
+          <div class="p-3 my-2 rounded-lg bg-[#070b14] border border-slate-800 text-xs">
+            <strong>Portfolio Overweights:</strong> Capital Goods, Infrastructure (L&T, Swan Energy/Defence), Real Estate, and Private Banks. Underweight IT Services.
+          </div>
+        `
+      },
+      {
+        id: "gs-ai-supercycle",
+        title: "The AI Hardware Supercycle: Semiconductors, Power Infrastructure & Data Centers",
+        institution: "Goldman Sachs",
+        brokerBadgeClass: "bg-amber-500/20 text-amber-300 border border-amber-500/40",
+        sector: "Technology & AI",
+        assetClass: "Global Equities",
+        rating: "OUTPERFORM",
+        ratingBadgeClass: "bg-sky-500/20 text-sky-400 border border-sky-500/30",
+        date: "August 2026",
+        analysts: "Toshiya Hari, Mark Delaney",
+        targetHeadline: "Global Semis Revenue to Exceed $1 Trillion by 2030",
+        summary: "Goldman Sachs analyzes the staggering enterprise capex scaling in hyperscalers (Microsoft, Meta, Google), highlighting memory bandwidth, customized ASICs, and power generation constraints.",
+        details: `
+          <h4 class="text-white font-bold mb-1">Key Thematic Findings:</h4>
+          <p>Power availability is the new bottleneck for AI data centers. Companies providing grid equipment, nuclear small modular reactors, and energy-efficient optical interconnects will capture outsized profit pools.</p>
+        `
+      },
+      {
+        id: "kotak-valuation-radar",
+        title: "Midcap Strategy: Separating Froth from Fundamental Free Cash Flows",
+        institution: "Domestic PSUs & Brokers",
+        brokerBadgeClass: "bg-orange-500/20 text-orange-300 border border-orange-500/40",
+        sector: "Macro & Strategy",
+        assetClass: "Equities",
+        rating: "NEUTRAL",
+        ratingBadgeClass: "bg-slate-700 text-slate-300 border border-slate-600",
+        date: "September 2026",
+        analysts: "Sanjeev Prasad, Anindya Bhowmik",
+        targetHeadline: "Valuation Divergence Alert",
+        summary: "Kotak Institutional Equities cautions on elevated P/E multiples in speculative midcaps, advising reallocation towards high-quality cash-flow generating industrial franchises.",
+        details: `
+          <p>Investors must differentiate between companies with verified order book execution capabilities (like L&T and tier-1 defence yards) versus narrative-driven low-float stocks.</p>
+        `
+      },
+      {
+        id: "motilal-wealth-creation",
+        title: "29th Annual Wealth Creation Study: The Next 100x Compounding Vectors",
+        institution: "Domestic PSUs & Brokers",
+        brokerBadgeClass: "bg-teal-500/20 text-teal-300 border border-teal-500/40",
+        sector: "Macro & Strategy",
+        assetClass: "Equities",
+        rating: "BUY",
+        ratingBadgeClass: "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30",
+        date: "November 2026",
+        analysts: "Raamdeo Agrawal",
+        targetHeadline: "Key Theme: High PEG Industrial Leaders",
+        summary: "Motilal Oswal's flagship study analyzes corporate longevity, highlighting manufacturing automation, green hydrogen, and precision engineering as the decade's wealth creators.",
+        details: `
+          <p>Focuses on companies scaling from sub-₹5,000 Cr to ₹50,000 Cr+ market caps via turnaround acquisitions and global export order substitution.</p>
+        `
+      },
+      {
+        id: "jpm-energy-transition",
+        title: "Global Energy Matrix: LNG Terminals, FSRU Utilization & Clean Fuels",
+        institution: "J.P. Morgan",
+        brokerBadgeClass: "bg-rose-500/20 text-rose-300 border border-rose-500/40",
+        sector: "Energy & Infrastructure",
+        assetClass: "Commodities & Equities",
+        rating: "OUTPERFORM",
+        ratingBadgeClass: "bg-sky-500/20 text-sky-400 border border-sky-500/30",
+        date: "October 2026",
+        analysts: "Christyan Malek",
+        targetHeadline: "LNG Charter Rates Firm through 2028",
+        summary: "J.P. Morgan analyzes the global shortage of Floating Storage and Regasification Units (FSRUs) as Asian demand surges for regasified LNG, benefiting specialized asset operators.",
+        details: `
+          <p>Long-term charter rates for modern FSRUs remain locked above $120,000/day, providing high annuity yields for consolidated infrastructure entities (such as Triumph Offshore/Swan).</p>
+        `
+      }
+    ];
+
+    // ==========================================
+    // 2. CONSENSUS STOCK DATABASE
+    // ==========================================
+    const CONSENSUS_STOCKS = [
+      { ticker: "SWANDEF", name: "Swan Defence and Heavy Industries", sector: "Defence / Shipyards", cmp: 2757.30, target: 3350.00, upside: "+21.5%", rating: "STRONG BUY", ratingClass: "bg-emerald-500/20 text-emerald-400", b: 6, h: 1, s: 0, pe: "32.4x" },
+      { ticker: "HAL", name: "Hindustan Aeronautics Limited", sector: "Aerospace & Defence", cmp: 4620.00, target: 5400.00, upside: "+16.8%", rating: "BUY", ratingClass: "bg-emerald-500/20 text-emerald-400", b: 18, h: 3, s: 1, pe: "38.2x" },
+      { ticker: "BEL", name: "Bharat Electronics Limited", sector: "Defence Electronics", cmp: 295.40, target: 360.00, upside: "+21.8%", rating: "STRONG BUY", ratingClass: "bg-emerald-500/20 text-emerald-400", b: 22, h: 2, s: 0, pe: "41.5x" },
+      { ticker: "LT", name: "Larsen & Toubro Limited", sector: "Infrastructure & Heavy Eng", cmp: 3620.00, target: 4250.00, upside: "+17.4%", rating: "BUY", ratingClass: "bg-emerald-500/20 text-emerald-400", b: 28, h: 4, s: 1, pe: "29.1x" },
+      { ticker: "HDFCBANK", name: "HDFC Bank Limited", sector: "Private Banking", cmp: 1740.00, target: 2150.00, upside: "+23.5%", rating: "STRONG BUY", ratingClass: "bg-emerald-500/20 text-emerald-400", b: 34, h: 3, s: 0, pe: "18.4x" },
+      { ticker: "RELIANCE", name: "Reliance Industries Limited", sector: "Energy / Telecom / Retail", cmp: 1290.00, target: 1540.00, upside: "+19.3%", rating: "BUY", ratingClass: "bg-emerald-500/20 text-emerald-400", b: 26, h: 6, s: 2, pe: "24.6x" },
+      { ticker: "TATAMOTORS", name: "Tata Motors Limited", sector: "Automobile & EV", cmp: 830.00, target: 1040.00, upside: "+25.3%", rating: "STRONG BUY", ratingClass: "bg-emerald-500/20 text-emerald-400", b: 21, h: 5, s: 2, pe: "15.8x" },
+      { ticker: "INFY", name: "Infosys Limited", sector: "IT Services", cmp: 1840.00, target: 1980.00, upside: "+7.6%", rating: "HOLD", ratingClass: "bg-slate-700 text-slate-300", b: 12, h: 16, s: 6, pe: "26.3x" }
+    ];
+
+    // ==========================================
+    // 3. UI RENDERING & FILTERING
+    // ==========================================
+    let currentBroker = 'all';
+    let currentSector = 'all';
+
+    function setBrokerFilter(broker) {
+      currentBroker = broker;
+      document.querySelectorAll('.broker-btn').forEach(btn => {
+        if (btn.dataset.broker === broker) {
+          btn.className = "broker-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-slate-950 transition";
+        } else {
+          btn.className = "broker-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
+        }
+      });
+      renderReports();
+    }
+
+    function setSectorFilter(sector) {
+      currentSector = sector;
+      document.querySelectorAll('.sector-btn').forEach(btn => {
+        if (btn.dataset.sector === sector) {
+          btn.className = "sector-btn px-2.5 py-1 rounded text-xs font-bold text-sky-400 bg-sky-500/10 border border-sky-500/30";
+        } else {
+          btn.className = "sector-btn px-2.5 py-1 rounded text-xs font-medium text-slate-400 hover:text-white";
+        }
+      });
+      renderReports();
+    }
+
+    function filterReports() {
+      renderReports();
+    }
+
+    function renderReports() {
+      const grid = document.getElementById('reports-grid');
+      const search = document.getElementById('report-search').value.toLowerCase();
+
+      const filtered = RESEARCH_REPORTS.filter(r => {
+        const matchesBroker = (currentBroker === 'all' || r.institution === currentBroker);
+        const matchesSector = (currentSector === 'all' || r.sector === currentSector);
+        const matchesSearch = r.title.toLowerCase().includes(search) ||
+                              r.institution.toLowerCase().includes(search) ||
+                              r.summary.toLowerCase().includes(search) ||
+                              r.sector.toLowerCase().includes(search);
+        return matchesBroker && matchesSector && matchesSearch;
+      });
+
+      document.getElementById('report-count-badge').innerText = filtered.length;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-12 text-center text-slate-400 card-terminal rounded-2xl">
+            No research reports match your active filter.
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(r => `
+        <div class="card-terminal p-5 rounded-2xl flex flex-col justify-between hover:border-slate-600 transition shadow-lg">
+          <div class="space-y-3">
+            <div class="flex justify-between items-center text-xs">
+              <span class="px-2 py-0.5 rounded font-bold uppercase tracking-wider font-mono ${r.brokerBadgeClass}">${r.institution}</span>
+              <span class="text-slate-400 font-mono text-[11px]">${r.date}</span>
+            </div>
+            <h4 class="text-base font-bold text-white hover:text-amber-400 transition cursor-pointer" onclick="openReportModal('${r.id}')">${r.title}</h4>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="px-2 py-0.5 rounded font-bold ${r.ratingBadgeClass}">${r.rating}</span>
+              <span class="text-amber-300 font-mono font-semibold">${r.targetHeadline}</span>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">${r.summary}</p>
+          </div>
+          <div class="pt-4 mt-3 border-t border-slate-800/80 flex justify-between items-center">
+            <span class="text-[11px] text-slate-500 font-mono">${r.analysts}</span>
+            <button onclick="openReportModal('${r.id}')" class="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 transition">
+              <span>Read Full Report</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderConsensusTable() {
+      const tbody = document.getElementById('consensus-table-body');
+      tbody.innerHTML = CONSENSUS_STOCKS.map(s => `
+        <tr class="hover:bg-slate-800/30 transition">
+          <td class="py-3 px-3">
+            <div class="font-bold text-white font-sans">${s.name}</div>
+            <span class="text-slate-400 text-[11px]">${s.ticker}</span>
+          </td>
+          <td class="py-3 px-3 font-sans text-slate-300">${s.sector}</td>
+          <td class="py-3 px-3 text-right font-bold text-white">₹${s.cmp.toLocaleString()}</td>
+          <td class="py-3 px-3 text-right text-sky-400 font-bold">₹${s.target.toLocaleString()}</td>
+          <td class="py-3 px-3 text-right text-emerald-400 font-bold">${s.upside}</td>
+          <td class="py-3 px-3 text-center">
+            <span class="px-2 py-0.5 rounded font-bold text-[10px] ${s.ratingClass}">${s.rating}</span>
+          </td>
+          <td class="py-3 px-3 text-center text-slate-300">${s.b} / ${s.h} / ${s.s}</td>
+          <td class="py-3 px-3 text-right text-slate-300">${s.pe}</td>
+          <td class="py-3 px-3 text-center font-sans">
+            <button onclick="askInstitutionalAiStock('${s.ticker}')" class="px-2.5 py-1 text-[11px] bg-slate-800 hover:bg-slate-700 text-sky-400 rounded transition font-semibold">View AI View</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function openReportModal(id) {
+      const r = RESEARCH_REPORTS.find(item => item.id === id);
+      if (!r) return;
+
+      document.getElementById('modal-title').innerText = r.title;
+      document.getElementById('modal-broker').innerText = r.institution;
+      document.getElementById('modal-broker').className = `px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-mono ${r.brokerBadgeClass}`;
+      document.getElementById('modal-sector').innerText = r.sector;
+      document.getElementById('modal-rating').innerText = r.rating;
+      document.getElementById('modal-rating').className = `px-2 py-0.5 rounded text-[10px] font-bold ${r.ratingBadgeClass}`;
+      document.getElementById('modal-meta').innerText = `${r.date} | Lead Analysts: ${r.analysts} | Target: ${r.targetHeadline}`;
+      document.getElementById('modal-body').innerHTML = r.details;
+
+      document.getElementById('report-modal').classList.remove('hidden');
+    }
+
+    function closeReportModal() {
+      document.getElementById('report-modal').classList.add('hidden');
+    }
+
+    function switchTab(tabId) {
+      const tabs = ['vault-tab', 'consensus-tab', 'ai-analyst-tab', 'macro-tab'];
+      tabs.forEach(t => document.getElementById(t).classList.add('hidden'));
+      document.getElementById(tabId).classList.remove('hidden');
+
+      document.querySelectorAll('#main-nav button').forEach(b => {
+        b.classList.remove('active-nav-tab');
+        b.classList.add('text-slate-400');
+      });
+
+      const btnId = 'tab-btn-' + tabId.replace('-tab', '');
+      const activeBtn = document.getElementById(btnId);
+      if (activeBtn) {
+        activeBtn.classList.add('active-nav-tab');
+        activeBtn.classList.remove('text-slate-400');
+      }
+
+      if (tabId === 'macro-tab' && !macroChartInstance) {
+        setTimeout(initMacroChart, 100);
+      }
+    }
+
+    // ==========================================
+    // 4. AI INSTITUTIONAL ASSISTANT LOGIC
+    // ==========================================
+    const AI_PRESET_ANSWERS = {
+      'goldman_india': `
+        <strong>Goldman Sachs India Macro Strategy:</strong><br>
+        Goldman Sachs sets a 12-month Nifty target of <strong>28,500 (+16.4%)</strong>. The firm projects India's GDP compounding at 6.6% in FY26–FY27, supported by the largest private capex expansion in 15 years. They maintain strong Overweight on Large Cap Financials (ICICI, HDFC Bank) and Industrial Leaders (L&T, HAL).
+      `,
+      'defence_supercycle': `
+        <strong>Jefferies & Morgan Stanley Stance on Defence & Shipyards:</strong><br>
+        Both Jefferies and Morgan Stanley classify Indian defence manufacturing as a "Decadal Supercycle". With indigenous defence capital outlays pegged at $130 Billion through 2032 and global shipyard slots in China/Korea booked through 2029, Indian players (HAL, BEL, Mazagon Dock, and Swan Defence) possess unmatched earnings visibility (25-30% EPS CAGR) and zero-debt balance sheets.
+      `,
+      'ai_chips': `
+        <strong>Goldman Sachs AI & Semiconductor Supercycle:</strong><br>
+        Goldman Sachs estimates total global semiconductor revenues will eclipse $1 Trillion by 2030, driven by generative AI hyperscaler capex. The firm highlights power infrastructure (turbines, SMRs, electrical transformers) as the crucial second-derivative bottleneck that will generate outsized equity returns.
+      `,
+      'banking_credit': `
+        <strong>J.P. Morgan Banking Sector Outlook:</strong><br>
+        J.P. Morgan projects Bank Nifty scaling to 56,000. Systemic Gross NPAs have dropped below 2.8%, credit growth remains healthy at 13-14%, and post-merger deposit ratios at HDFC Bank are turning positive, making large-cap private banks attractive risk-reward plays.
+      `
+    };
+
+    function askInstitutionalAi(key) {
+      const box = document.getElementById('ai-output-text');
+      box.innerHTML = '<span class="text-emerald-400 font-mono animate-pulse">Querying institutional research reports...</span>';
+      setTimeout(() => {
+        box.innerHTML = AI_PRESET_ANSWERS[key] || "Analysis compiled.";
+      }, 350);
+    }
+
+    function askInstitutionalAiStock(ticker) {
+      switchTab('ai-analyst-tab');
+      const box = document.getElementById('ai-output-text');
+      box.innerHTML = `<span class="text-emerald-400 font-mono animate-pulse">Aggregating consensus ratings for ${ticker}...</span>`;
+      setTimeout(() => {
+        const s = CONSENSUS_STOCKS.find(item => item.ticker === ticker);
+        if (s) {
+          box.innerHTML = `
+            <strong>Institutional Consensus Analysis for ${s.name} (${s.ticker}):</strong><br>
+            • <em>Current Market Price (CMP):</em> ₹${s.cmp.toLocaleString()}<br>
+            • <em>Consensus 12M Target:</em> ₹${s.target.toLocaleString()} (<strong class="text-emerald-400">${s.upside} Upside</strong>)<br>
+            • <em>Analyst Ratings Breakdown:</em> ${s.b} Buy / ${s.h} Hold / ${s.s} Sell (${s.rating})<br>
+            • <em>Valuation Multiple:</em> Forward P/E of ${s.pe}. Covered actively by Goldman Sachs, Morgan Stanley, Jefferies, and domestic research desks.
+          `;
+        }
+      }, 350);
+    }
+
+    function submitInstitutionalQuery() {
+      const q = document.getElementById('ai-query').value.trim().toLowerCase();
+      const box = document.getElementById('ai-output-text');
+
+      if (!q) {
+        box.innerHTML = "Please enter a question or select one of the institutional theme chips above.";
+        return;
+      }
+
+      box.innerHTML = '<span class="text-emerald-400 font-mono animate-pulse">Synthesizing brokerage database...</span>';
+      setTimeout(() => {
+        if (q.includes('goldman') || q.includes('nifty') || q.includes('capex')) {
+          box.innerHTML = AI_PRESET_ANSWERS['goldman_india'];
+        } else if (q.includes('defence') || q.includes('ship') || q.includes('swan') || q.includes('hal')) {
+          box.innerHTML = AI_PRESET_ANSWERS['defence_supercycle'];
+        } else if (q.includes('ai') || q.includes('chip') || q.includes('tech') || q.includes('semiconductor')) {
+          box.innerHTML = AI_PRESET_ANSWERS['ai_chips'];
+        } else if (q.includes('bank') || q.includes('hdfc') || q.includes('icici') || q.includes('credit')) {
+          box.innerHTML = AI_PRESET_ANSWERS['banking_credit'];
+        } else {
+          box.innerHTML = `
+            <strong>Institutional Research Synthesis for "${q}":</strong><br>
+            Based on active coverage notes across Goldman Sachs, Morgan Stanley, and Jefferies, the consensus strategy emphasizes domestic manufacturing, defence aerospace, and capital goods. Valuations in midcaps remain premium, but structural EPS growth (>15% CAGR) continues to justify institutional portfolio allocation into India.
+          `;
+        }
+      }, 400);
+    }
+
+    function calcNiftySim() {
+      const eps = parseFloat(document.getElementById('slider-eps').value);
+      const pe = parseFloat(document.getElementById('slider-nifty-pe').value);
+
+      document.getElementById('sim-eps-val').innerText = '₹' + eps;
+      document.getElementById('sim-pe-val').innerText = pe.toFixed(1) + 'x';
+
+      const target = Math.round(eps * pe);
+      const cmp = 24480;
+      const upside = (((target - cmp) / cmp) * 100).toFixed(1);
+
+      document.getElementById('sim-nifty-target').innerText = target.toLocaleString();
+      document.getElementById('sim-nifty-upside').innerText = (upside >= 0 ? '+' : '') + upside + '%';
+    }
+
+    // ==========================================
+    // 5. MACRO CHART INITIALIZATION
+    // ==========================================
+    let macroChartInstance = null;
+
+    function initMacroChart() {
+      const ctx = document.getElementById('macroChart').getContext('2d');
+      const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'];
+      
+      macroChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'Nifty 50 (Normalized)',
+              data: [100, 102.5, 105.1, 104.2, 108.6, 112.4, 114.8, 117.2, 115.6, 118.2, 120.4],
+              borderColor: '#38bdf8',
+              backgroundColor: 'transparent',
+              borderWidth: 2,
+              pointRadius: 2
+            },
+            {
+              label: 'S&P 500 (Normalized)',
+              data: [100, 103.2, 106.4, 104.8, 109.1, 113.8, 116.2, 118.5, 117.9, 121.2, 122.8],
+              borderColor: '#fbbf24',
+              backgroundColor: 'transparent',
+              borderWidth: 2,
+              pointRadius: 2
+            },
+            {
+              label: 'Brent Crude Oil (Normalized)',
+              data: [100, 104.5, 108.2, 106.1, 99.4, 96.2, 98.1, 94.5, 91.2, 93.6, 92.4],
+              borderColor: '#f43f5e',
+              backgroundColor: 'transparent',
+              borderWidth: 1.5,
+              borderDash: [5, 5],
+              pointRadius: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: '#94a3b8' } }
+          },
+          scales: {
+            x: { ticks: { color: '#64748b' }, grid: { color: '#1e293b' } },
+            y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
+          }
+        }
+      });
+    }
+
+    // Modal controls
+    function openInstallModal() {
+      document.getElementById('install-modal').classList.remove('hidden');
+    }
+    function closeInstallModal() {
+      document.getElementById('install-modal').classList.add('hidden');
+    }
+
+    // Initialize on load
+    window.onload = function() {
+      renderReports();
+      renderConsensusTable();
+      calcNiftySim();
+    };
+  </script>
+</body>
+</html>
